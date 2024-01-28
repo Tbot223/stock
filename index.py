@@ -42,8 +42,8 @@ def check_login():
             checkAutoSingup = input('Do You need auto Sing up? (y/n) : ')
             if checkAutoSingup == 'y':
                 print('Sing up Start!')
-                os.mkdir(path)
-                os.chdir(path)
+                os.mkdir(pathU)
+                os.chdir(pathU)
                 with open(username +' is password'+'.txt', 'w') as file:
                     file.write(password)
                 with open(username +'.txt', 'w') as file:
@@ -59,7 +59,6 @@ def check_login():
                 print('Sing up Start!')
                 username = input("Enter your username: ")
                 password = input("Enter your password: ")
-                path = './DB/'+username
                 os.mkdir(pathU)
                 os.chdir(pathU)
                 with open(username +' is password'+'.txt', 'w') as file:
@@ -118,6 +117,7 @@ def system():
         system()
     elif command == "info":
         print("")
+        os.chdir(pathB)
         os.chdir(pathU)
         fp = open(username +' is password'+'.txt', 'r')
         fn = open(username +'.txt', 'r')
