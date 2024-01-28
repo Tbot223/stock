@@ -4,10 +4,8 @@ from datetime import datetime
 
 if os.path.isdir('./DB') == True and os.path.isdir('./DB/user') == True and os.path.isdir('./DB/assets/stock') == True:
     print("DB ready successful!")
-elif os.path.isdir('./DB/') == False:
+elif os.path.isdir('./DB') == False:
     os.mkdir('./DB')
-    os.mkdir('./DB/user')
-    os.mkdir('./DB/assets/stock')
     print("DB make!")
     print("DB ready successful!")
 elif os.path.isdir('./DB/user') == False:
