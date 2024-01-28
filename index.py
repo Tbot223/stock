@@ -39,9 +39,6 @@ pathU = './DB/user/'+username
 pathS = './DB/assets/stock'
 pathB = os.getcwd()
 
-def pay(name, money):
-    print('?')
-
 def check_login():
     global path, username, password, login
     os.chdir(pathB)
