@@ -6,6 +6,7 @@ if os.path.isdir('./DB') == True:
     print("DB ready successful!")
 elif os.path.isdir('./DB/') == False:
     os.mkdir('./DB')
+    os.mkdir('./DB/user')
     print("DB make!")
     print("DB ready successful!")
 else:
@@ -25,6 +26,7 @@ def enc(input_string, key):
 username = input("Enter your username : ")
 password = input("Enter your password : ")
 path = './DB/'+username
+pathU = './DB/user/'+username
 pathB = os.getcwd()
 
 def pay(name, money):
@@ -33,7 +35,7 @@ def pay(name, money):
 def check_login():
     global path, username, password, login
     os.chdir(pathB)
-    if username not in os.listdir("./DB"):
+    if username not in os.listdir("./DB/user"):
         checkacchave = input('Do you have a account? (y/n) : ')
         if checkacchave == 'n':
             os.system("cls")
@@ -58,8 +60,8 @@ def check_login():
                 username = input("Enter your username: ")
                 password = input("Enter your password: ")
                 path = './DB/'+username
-                os.mkdir(path)
-                os.chdir(path)
+                os.mkdir(pathU)
+                os.chdir(pathU)
                 with open(username +' is password'+'.txt', 'w') as file:
                     file.write(password)
                 with open(username +'.txt', 'w') as file:
@@ -78,7 +80,7 @@ def check_login():
             password = input("Enter your password: ")
             check_login()
     else:
-        os.chdir(path)
+        os.chdir(pathU)
         fp = open(username +' is password'+'.txt', 'r')
         fn = open(username +'.txt', 'r')
         username_from_DB = fn.read().split('\n')
@@ -116,6 +118,7 @@ def system():
         system()
     elif command == "info":
         print("")
+        os.chdir(pathU)
         fp = open(username +' is password'+'.txt', 'r')
         fn = open(username +'.txt', 'r')
         fm = open(username +' is asset'+'.txt', 'r')
@@ -137,8 +140,7 @@ def system():
         os.chdir("./DB")
     elif command == "member_list":
         os.system("cls")
-        os.chdir(pathB)
-        os.chdir("./DB")
+        os.chdir(pathB+"/DB/user")
         users = os.listdir()
         print("")
         print("[ MEMBER_LIST ]")
@@ -152,7 +154,7 @@ def system():
         money_from_DB = int(asset_from_DB[0])
         os.system("cls")
         os.chdir(pathB)
-        os.chdir("./DB/"+username)
+        os.chdir(pathU)
         print("one stock = 1,000")
         buynum = int(input("Please enter as much as you want to buy stocks : "))
         if buynum <= 0:
@@ -183,7 +185,7 @@ def system():
         money_from_DB = int(asset_from_DB[0])
         os.system("cls")
         os.chdir(pathB)
-        os.chdir("./DB/"+username)
+        os.chdir(pathU)
         print("one stock = 1,000")
         sellnum = int(input("Please enter as much as you want to sell stocks : "))
         if sellnum <= 0:
