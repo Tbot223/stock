@@ -1,6 +1,9 @@
 import os
 import hashlib
 from datetime import datetime
+import random
+
+pathB = os.getcwd()
 
 def dbcheck():
     if os.path.isdir('./DB') == True and os.path.isdir('./DB/user') == True and os.path.isdir('./DB/assets/stock') == True:
@@ -11,13 +14,20 @@ def dbcheck():
     elif os.path.isdir('./DB/user') == False:
         os.mkdir('./DB/user')
         dbcheck()
+    elif os.path.isdir('./DB/assets') == False:
+        os.mkdir('./DB/assets')
+        dbcheck()
     elif os.path.isdir('./DB/assets/stock') == False:
         os.mkdir('./DB/assets/stock')
+        os.chdir('./DB/assets/stock')
+        with open('stock1'+'.txt', 'w') as file:
+            file.write("1000")
         print("DB make!")
         print("DB ready successful!")
     else:
         print('exit Error : not found directory or not make directory')
         os.system("pause")
+dbcheck()
 
 #this function by bing AI
 def enc(input_string, key):
@@ -31,13 +41,13 @@ def enc(input_string, key):
 
 username = input("Enter your username : ")
 password = input("Enter your password : ")
-path = './DB/'+username
 pathU = './DB/user/'+username
+pathA = './DB/assets'
 pathS = './DB/assets/stock'
-pathB = os.getcwd()
+j = False
 
 def check_login():
-    global path, username, password, login
+    global username, password, login
     os.chdir(pathB)
     if username not in os.listdir("./DB/user"):
         checkacchave = input('Do you have a account? (y/n) : ')
@@ -104,6 +114,21 @@ def check_login():
             check_login()
 
 def system():
+    global j
+    os.chdir(pathB)
+    if j == True:
+        with open('./DB/assets/stock/stock1'+'.txt', 'r') as file:
+            a = int(file.read())
+        b = random.choices(range(-1, 2), weights = [30, 40, 30], k = 1)
+        c = int(b[0])
+        ab = int(a+c)
+        with open('./DB/assets/stock/stock1'+'.txt', 'w') as file:
+            file.write(str(ab))
+        stock1 = format(int(ab), ",")+"won"
+    else:
+        with open('./DB/assets/stock/stock1'+'.txt', 'r') as file:
+            a = int(file.read())
+        stock1 = format(int(a), ",")+"won"
     print("")
     print('help = "?" enter')
     print("")
@@ -118,6 +143,7 @@ def system():
         print('member_list - member list print')
         print("buy - buy stock")
         print("sell - sell stock")
+        print("stocks - stock list print")
         system()
     elif command == "info":
         print("")
@@ -153,13 +179,18 @@ def system():
                 print(users[i])
         system()
     elif command == "buy":
+        os.chdir(pathB)
+        with open('./DB/assets/stock/stock1'+'.txt', 'r') as file:
+            a = int(file.read())
+        os.chdir(pathU)
         fm = open(username +' is asset'+'.txt', 'r')
         asset_from_DB = fm.read().split('\n')
         money_from_DB = int(asset_from_DB[0])
         os.system("cls")
         os.chdir(pathB)
         os.chdir(pathU)
-        print("one stock = 1,000")
+        print("[ stocks ]\n")
+        print("name : stock1, price : "+stock1)
         buynum = int(input("Please enter as much as you want to buy stocks : "))
         if buynum <= 0:
             print("stock buy failed, please retry")
@@ -167,7 +198,7 @@ def system():
             system()
         elif 1000*buynum <= int(asset_from_DB[0]):
             with open(username +' is asset'+'.txt', 'w') as file:
-                x = int(money_from_DB)-1000*buynum
+                x = int(money_from_DB)-a*buynum
                 a = int(asset_from_DB[1])+buynum
                 file.write(str(x)+"\n")
                 file.write(str(a))
@@ -184,13 +215,18 @@ def system():
             system()
         system()
     elif command == "sell":
+        os.chdir(pathB)
+        with open('./DB/assets/stock/stock1'+'.txt', 'r') as file:
+            a = int(file.read())
+        os.chdir(pathU)
         fm = open(username +' is asset'+'.txt', 'r')
         asset_from_DB = fm.read().split('\n')
         money_from_DB = int(asset_from_DB[0])
         os.system("cls")
         os.chdir(pathB)
         os.chdir(pathU)
-        print("one stock = 1,000")
+        print("[ stocks ]\n")
+        print("name : stock1, price : "+stock1)
         sellnum = int(input("Please enter as much as you want to sell stocks : "))
         if sellnum <= 0:
             print("stock sell failed, please retry")
@@ -198,7 +234,7 @@ def system():
             system()
         elif sellnum <= int(asset_from_DB[1]):
             with open(username +' is asset'+'.txt', 'w') as file:
-                x = int(money_from_DB)+1000*sellnum
+                x = int(money_from_DB)+a*sellnum
                 a = int(asset_from_DB[1])-sellnum
                 file.write(str(x)+"\n")
                 file.write(str(a))
@@ -213,6 +249,12 @@ def system():
             print("stock sell failed, please retry")
             print("your money is "+asset_from_DB[1])
             system()
+    elif command == "stocks":
+        os.system("cls")
+        print("[ stocks ]\n")
+        print("name : stock1, price : "+stock1)
+        j = True
+        system()
     else:
         print("")
         print("wrong command")
